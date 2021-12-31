@@ -1,0 +1,21 @@
+- hosts: droplet
+  gather_facts: false
+  connection: local
+  vars:
+    git_repo_ssh: git@github.com:emlagowski/nginx-proxy-with-lets-encrypt.git
+    certificate_owner_email: marcinlagowski92@gmail.com
+    repo_dest: repos/nginx
+
+  tasks:
+    - name: Clone repository
+      git:
+        repo: {{ git_repo_ssh }}
+        dest: {{ repo_dest }}
+
+    - name: Run docker-compose
+      community.docker.docker_compose:
+        project_src: {{ repo_dest }}
+      register: output
+
+    - ansible.builtin.debug:
+        var: output
