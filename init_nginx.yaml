@@ -1,7 +1,8 @@
 - hosts: droplet
   gather_facts: false
-  connection: local
   vars:
+    ansible_user: root
+    ansible_ssh_private_key_file: ~/.ssh/id_rsa
     git_repo_ssh: git@github.com:emlagowski/nginx-proxy-with-lets-encrypt.git
     certificate_owner_email: marcinlagowski92@gmail.com
     repo_dest: repos/nginx
@@ -9,12 +10,14 @@
   tasks:
     - name: Clone repository
       git:
-        repo: {{ git_repo_ssh }}
-        dest: {{ repo_dest }}
+        repo: "{{ git_repo_ssh }}"
+        dest: "{{ repo_dest }}"
+        key_file: /root/.ssh/id_ed25519
+        accept_hostkey: yes
 
     - name: Run docker-compose
       community.docker.docker_compose:
-        project_src: {{ repo_dest }}
+        project_src: "{{ repo_dest }}"
       register: output
 
     - ansible.builtin.debug:
