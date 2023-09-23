@@ -30,7 +30,7 @@ services:
     environment:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - DEFAULT_EMAIL=${CERTIFICATE_OWNER_EMAIL}
-      - ACME_CA_URI=${ACME_CA_URI:https://acme-v02.api.letsencrypt.org/directory}
+      - ACME_CA_URI="${ACME_CA_URI:-https://acme-v02.api.letsencrypt.org/directory}"
     networks:
       - reverse_proxy
 
